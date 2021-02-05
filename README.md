@@ -204,7 +204,7 @@ Use the following in your test helper to change the test definition permissions 
 PolicyAssertions.config.separator = '__separator__'
 ```
 
-## Test Output Results
+## How to Make Test Output Results Clear? 
 
 You may find that the output of certain tests results are confusing. e.g.:
 
@@ -212,7 +212,22 @@ You may find that the output of certain tests results are confusing. e.g.:
 Expected ProjectPolicy to grant update? on #<Project:0x00007f7d04514ef0> for #<User:0x00007f7d045001a8> but it didn't
 ```
 
-What is `#<User:0x00007f7d045001a8>`? A way to solve this problem is to simply monkey patch the `to_s` method within your tests.
+What is `#<User:0x00007f7d045001a8>`? 
+
+### Simple Solution 1:
+
+* Override `to_s` on the relevant Models.
+
+```ruby
+class User
+   def to_s
+      first_name + last_name
+   end
+end
+```
+### Solution 2:
+
+If you want your `to_s` to output different resuts when testing, you could monkey patch the `to_s` method within your tests, leaving production functionality untouched.
 
 ```ruby
 # e.g. test_helper
